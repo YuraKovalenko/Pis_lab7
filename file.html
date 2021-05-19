@@ -1,0 +1,56 @@
+<!DOCTYPE html> <!--websocket.html-->
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+<script language="javascript" type="text/javascript">
+//Цей WebSocket-сервер відсилає клієнту його повідомлення без змін
+var wsUri = "wss://echo.websocket.org/";
+var output;
+function init()
+{
+ output = document.getElementById("output");
+ //Запуск тестування: new WebSocket => onOpen => onMessage => onClose
+ testWebSocket();
+}
+function testWebSocket()
+{
+ websocket = new WebSocket(wsUri);
+ websocket.onopen = function(evt) { onOpen(evt) };
+ websocket.onclose = function(evt) { onClose(evt) };
+ websocket.onmessage = function(evt) { onMessage(evt) };
+ websocket.onerror = function(evt) { onError(evt) };
+}
+function onOpen(evt)
+{
+ writeToScreen("CONNECTED");
+ doSend("Hello, my name is Yura");
+}
+function onClose(evt)
+{
+ writeToScreen("DISCONNECTED by function onMessage()");
+}
+function onMessage(evt)
+{
+ writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+ websocket.close();
+}
+function onError(evt)
+{
+ writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+function doSend(message)
+{
+ writeToScreen("SENT: " + message);
+ websocket.send(message); //Відсилання повідомлення на сервер
+}
+function writeToScreen(message) //Виведення на екран в наступний рядок
+{
+ var pre = document.createElement("p");
+ pre.style.wordWrap = "break-word";
+ pre.innerHTML = message;
+ output.appendChild(pre);
+}
+ //На подію завантаження вікна запускає функцію init()
+window.addEventListener("load", init, false);
+</script>
+<h2>WebSocket Test</h2>
+<div id="output"></div>

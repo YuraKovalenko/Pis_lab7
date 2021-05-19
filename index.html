@@ -1,0 +1,14 @@
+<html>
+<head></head>
+<body>
+ <div id="message"></div>
+ <!--<script src="/socket.io/socket.io.js"></script>Цього файлу ніде нема-->
+ <script>
+ var socket = io();
+ socket.on('message', function(msg){
+ console.log(msg); //Виведення числа на консоль і в html
+ document.getElementById("message").innerHTML = msg;
+ });
+ </script>
+</body>
+</html>
